@@ -1,0 +1,7 @@
+---
+simple:
+  - "301 http://smh.com.au/ http://www.smh.com.au/"
+  - "301 http://theage.com.au/ http://www.theage.com.au/"
+  - "302 http://canberratimes.com.au/ http://www.fairfax.com.au/"
+  - "302 http://brisbanetimes.com.au/ http://www.fairfax.com.au/"
+  - "302 http://watoday.com.au/ http://www.fairfax.com.au/"
