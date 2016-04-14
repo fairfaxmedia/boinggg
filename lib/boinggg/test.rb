@@ -1,5 +1,6 @@
 require 'net/http'
-require 'pp'
+require 'differ'
+require 'colorize'
 
 module Boinggg
   class Boinggg::Test
@@ -17,6 +18,7 @@ module Boinggg
         @lastresponse = http.request(request)
       end
       @laststatus = ( code_ok? && location_ok? ) ? 'OK' : 'FAIL'
+      @laststatus = 'EXCEPTION' if @lastresponse.code.to_i > 499
     rescue => e
       @laststatus = 'EXCEPTION'
       STDERR.puts e.message
@@ -28,6 +30,12 @@ module Boinggg
 
     def last_location
       @lastresponse.get_fields('Location').first
+    rescue => e
+      ""
+    end
+
+    def request_exception?
+      @laststatus == 'EXCEPTION'
     end
 
     def code_ok?
@@ -38,9 +46,17 @@ module Boinggg
       URI(last_location) == URI(@to)
     end
 
-    def format_log
-      onfail = @laststatus == 'FAIL' ? [ "actual", last_code, last_location ] : []
-      [ @laststatus, "#{@hostname}:#{@port}", "desired", @type, @from, @to, onfail ].flatten.join(" ")
+    def format_log(colour = false)
+      [
+        @laststatus,
+        "#{@hostname}:#{@port}",
+        "desired",
+        @type,
+        @from,
+        "actual",
+        last_code.to_s.colorize(code_ok? ? :green : :red),
+        request_exception? ? "" : Differ.diff_by_word(@to,last_location).format_as(:color),
+      ].join(" ")
     end
   end
 end
