@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Framework for testing HTTP redirects}
   spec.description   = %q{Framework for testing HTTP redirects. Uncomplicated. No excuses.}
   spec.homepage      = "https://github.com/fairfaxmedia/boinggg"
-  spec.license       = "MIT"
+  spec.license       = "Apache-2.0"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
